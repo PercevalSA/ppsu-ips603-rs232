@@ -2,9 +2,9 @@
 
 import serial
 
-class IPS603:
 
-    def __init__(self, serialport = "/dev/ttyUSB0"):
+class IPS603:
+    def __init__(self, serialport="/dev/ttyUSB0"):
         """connect to serial interface to send commands to PPSU
 
         Args:
@@ -12,29 +12,34 @@ class IPS603:
         """
         print("Opening Serial Communication")
         BAUDRATE = 2400
-        self.serial_con = serial.Serial(serialport, BAUDRATE, timeout=2)
+        self.serial_con = serial.Serial(serialport, BAUDRATE, timeout=1)
 
     def _send(self, command: str) -> str:
         """send command on serial port
 
         Args:
-            command (str): command to send to the PPSU
+            command (str or bytes): command to send to the PPSU
 
         Returns:
             str: response from PPSU
         """
-        self.serial_con.write(command.encode())
-        response = self.serial_con.readline() 
 
-        # print(f"Reading: {response}") 
-        # readOut = ser.readline().decode('ascii')
-        # self.serial_con.flush() #flush the buffer
+        # to handle both str and bytesq like 'L\n' or b'\x4C\x0D'
+        if isinstance(command, str):
+            command = command.encode()
+
+        self.serial_con.write(command)
+        response = self.serial_con.readline()
+
+        print(f"Reading: {response}")
+        # print(f"UTF-8: {response.decode('utf-8')}")
+        self.serial_con.flush() #flush the buffer
 
         return response
 
     def getValues(self):
-        self._send("L\n")
-        print(f"Values : {response}")
+        response = self._send("L\n") # b'\x4C\x0D'
+        print(f"Values: {response}")
 
     def getTension(self):
         self._send("V\r")
@@ -44,16 +49,18 @@ class IPS603:
 
     def getPower(self):
         self._send("W\n")
-        
+
     def getMaxTension(self):
         self._send("U\n")
 
     def getMaxIntensity(self):
         self._send("I\n")
-    
+
     def getMaxPower(self):
         self._send("P\n")
 
     def getStatus(self):
-        self._send("F\n")
+        response = self._send("F\n")
+        print(f"Status: {response}")
+
         # 7 chars
