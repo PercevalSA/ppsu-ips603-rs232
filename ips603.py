@@ -28,17 +28,18 @@ class IPS603:
         if isinstance(command, str):
             command = command.encode()
 
-        self.serial_con.write(command)
-        response = self.serial_con.readline()
+        ret = self.serial_con.write(command)
+        print(f"write: {ret}")
 
+        response = self.serial_con.readline()
         print(f"Reading: {response}")
         # print(f"UTF-8: {response.decode('utf-8')}")
-        self.serial_con.flush() #flush the buffer
 
+        self.serial_con.flush()  # flush the buffer
         return response
 
     def getValues(self):
-        response = self._send("L\n") # b'\x4C\x0D'
+        response = self._send("L\n")  # b'\x4C\x0D'
         print(f"Values: {response}")
 
     def getTension(self):
@@ -61,6 +62,4 @@ class IPS603:
 
     def getStatus(self):
         response = self._send("F\n")
-        print(f"Status: {response}")
-
-        # 7 chars
+        print(f"Status: {response}")  # 7 chars
