@@ -1,0 +1,36 @@
+{
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "files.associations": {
+        "*.md.in": "markdown",
+        "*.txt": "plaintext",
+    },
+    "files.eol": "\n",
+    "editor.formatOnSave": true,
+    "editor.rulers": [
+        90
+    ],
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.formatting.provider": "black",
+    "[python]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        },
+        "editor.rulers": [
+            90
+        ]
+    },
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/.git": true,
+        ".cache/**": true,
+    },
+    "files.watcherExclude": {
+        "**/__pycache__": true,
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/env/**": true,
+        "**/build/**": true
+    },
+    "files.insertFinalNewline": true,
+}
